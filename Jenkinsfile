@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        lable 'main-host'
+        label 'main-host'
     }
     stages {
     //     stage('Initialize'){
