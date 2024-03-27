@@ -7,6 +7,7 @@ pipeline {
 
         stage('Hello') {
             steps {
+                sh '${WORKSPACE}/jenkins/pipeline/update-jenkins-plugins-ppln/update-plugins.sh'
                 echo 'Hello World'
                 sh 'docker build -t my-django-app .'
                 echo 'Image build'
