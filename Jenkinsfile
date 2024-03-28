@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    enviroment{
+    enviroment {
         AWS_ACCOUNT_ID = '211125505548'
         AWS_DEFAULT_REGION = 'ap-south-1'
         IMAGE_REPO_NAME = 'jenkin-demo'
