@@ -4,7 +4,7 @@ pipeline {
         stage('Hello') {
             steps {
                 echo 'Hello World'
-                sh 'docker build -t my-django-app .'
+                sh 'sudo docker build -t my-django-app .'
                 echo 'Image build'
             }
         }
