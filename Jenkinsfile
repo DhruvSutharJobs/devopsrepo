@@ -9,7 +9,7 @@ pipeline {
         stage('build docker image'){
             steps{
                 script{
-                    sh 'sudo -A docker build -t my-django-app .'
+                    sh 'docker build -t my-django-app .'
                 }
             }
         }
