@@ -7,8 +7,10 @@ pipeline {
             }
         }
         stage('build docker image'){
-            script{
-                sh 'sudo -A docker build -t my-django-app .'
+            steps{
+                script{
+                    sh 'sudo -A docker build -t my-django-app .'
+                }
             }
         }
     }
