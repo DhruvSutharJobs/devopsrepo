@@ -1,4 +1,4 @@
-FROM python:3.12.2
+FROM python:latest
 
 ENV PYTHONUNBUFFERED 1
 
@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD [ "python3","manage.py","runserver","0.0.0.0:8181"]
+CMD [ "python3","manage.py","runserver"]
