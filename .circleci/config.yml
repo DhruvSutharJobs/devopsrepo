@@ -47,7 +47,6 @@ workflows:
           dockerfile: Dockerfile
           path: .
           repo: django-circleci-reg
-          tag: "$CIRCLE_SHA1"
 
       - deploy:
           requires:
