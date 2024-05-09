@@ -39,3 +39,7 @@ workflows:
           path: .
           repo: django-circleci-reg
           tag: "$CIRCLE_SHA1"
+      - deploy:
+          requires:
+            - build_and_push_image
+          context: aws-ecr
