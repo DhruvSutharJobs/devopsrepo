@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@8.1.3
-  aws-cli: circleci/aws-cli@3.1.4
+  aws-ecr: circleci/aws-ecr@9.1.0
+  aws-cli: circleci/aws-cli@4.1.3
 
 jobs:
   deploy:
@@ -11,9 +11,9 @@ jobs:
       NEW_INSTANCE_NAME: circleci
     steps:
       - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+          aws_access_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          region: AWS_REGION
       - add_ssh_keys:
           fingerprints:
             - "SHA256:u058n7JzYAn2CsIuZD2z9DPedUzJanC7bp7e0JN09/8"
