@@ -35,14 +35,15 @@ jobs:
 workflows:
   build_and_push_image:
     jobs:
-      - aws-ecr/build-and-push-image:
+      - aws-ecr/build_and_push_image:
           context: aws-ecr
           create-repo: true
           dockerfile: Dockerfile
           path: .
           repo: django-circleci-reg
           tag: "$CIRCLE_SHA1"
+
       - deploy:
           requires:
-            - aws-ecr/build-and-push-image
+            - aws-ecr/build_and_push_image
           context: aws-ecr
