@@ -43,7 +43,7 @@ workflows:
                 aws_secret_access_key: AWS_SECRET_ACCESS_KEY
                 region: AWS_REGION
           context: aws-ecr
-          create_repo: true
+          create_repo: false
           dockerfile: Dockerfile
           path: .
           repo: django-circleci-reg
