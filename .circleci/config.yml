@@ -18,7 +18,7 @@ jobs:
           fingerprints:
             - "SHA256:u058n7JzYAn2CsIuZD2z9DPedUzJanC7bp7e0JN09/8"
       - run:
-          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo apt update && sudo apt install python3.11"
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo apt update && sudo apt install python3"
           name: install python
       - run:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP
