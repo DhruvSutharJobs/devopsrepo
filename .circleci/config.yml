@@ -44,5 +44,5 @@ workflows:
           tag: "$CIRCLE_SHA1"
       - deploy:
           requires:
-            - build_and_push_image
+            - aws-ecr/build-and-push-image
           context: aws-ecr
