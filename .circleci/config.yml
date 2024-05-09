@@ -45,6 +45,7 @@ workflows:
           context: aws-ecr
           create_repo: false
           dockerfile: Dockerfile
+          region: ${AWS_REGION}
           path: .
           repo: django-circleci-reg
 
