@@ -1,4 +1,32 @@
 version: 2.1
+jobs:
+  deploy:
+    executor: aws-cli/default
+    environment:
+      NEW_INSTANCE_NAME: circleci
+    steps:
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:u058n7JzYAn2CsIuZD2z9DPedUzJanC7bp7e0JN09/8"
+      - run:
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa ubuntu@$INSTANCE_IP "sudo apt update && sudo apt install python3.11"
+          name: install python
+      - run:
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa ubuntu@$INSTANCE_IP
+            "sudo apt-get update &&
+            sudo apt-get install ca-certificates curl &&
+            sudo install -m 0755 -d /etc/apt/keyrings &&
+            sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc &&
+            sudo chmod a+r /etc/apt/keyrings/docker.asc &&
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null &&
+            sudo apt-get update &&
+            sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
+          name: install docker
+
 orbs:
   aws-ecr: circleci/aws-ecr@8.1.3
 workflows:
