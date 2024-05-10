@@ -18,7 +18,7 @@ jobs:
           fingerprints:
             - "SHA256:u058n7JzYAn2CsIuZD2z9DPedUzJanC7bp7e0JN09/8"
       - run:
-          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo apt install curl unzip -y && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -o awscliv2.zip  && sudo ./aws/install"
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo apt install curl unzip -y && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -o awscliv2.zip  && sudo ./aws/install --update"
           name: Installing AWS CLI
       - run:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo apt update && sudo apt install python3 -y"
