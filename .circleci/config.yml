@@ -38,7 +38,7 @@ jobs:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID} && aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} && aws configure set default.region ${AWS_REGION}"
           name: Configure AWS
       - run:
-          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo groupadd docker && sudo usermod -aG docker $USER && su -s ${USER} && aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com && docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest"
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo usermod -aG docker $USER && su -s ${USER} && aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com && docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest"
           name: IMAGE pull
 workflows:
   build_and_push_image:
