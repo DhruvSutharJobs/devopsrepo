@@ -31,7 +31,11 @@ jobs:
             sudo apt-get update &&
             sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y"
           name: install docker
-
+      - run:
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID} && aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} && aws configure set default.region ${AWS_REGION}"
+          name: Configure AWS
+      - run:
+          command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest"
 workflows:
   build_and_push_image:
     jobs:
