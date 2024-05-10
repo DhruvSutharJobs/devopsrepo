@@ -39,6 +39,7 @@ jobs:
           name: Configure AWS
       - run:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo groupadd docker && sudo usermod -aG docker $USER && su -s ${USER} && aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com && docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest"
+          name: IMAGE pull
 workflows:
   build_and_push_image:
     jobs:
