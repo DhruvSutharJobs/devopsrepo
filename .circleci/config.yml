@@ -59,6 +59,11 @@ jobs:
           dockerfile: Dockerfile
           push_image: false
 
+  test:
+    docker:
+      - image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest
+    steps:
+      - checkout
 
 
 workflows:
@@ -79,6 +84,11 @@ workflows:
       #     repo: django-circleci-reg
       - build:
           context: aws-ecr
+      
+      - test:
+          requires:
+            - build
+          context: aws-ecr
 
       - hold:
           type: approval
@@ -88,5 +98,6 @@ workflows:
       - deploy:
           requires:
             - hold
+            - test
             # - aws-ecr/build_and_push_image
           context: aws-ecr
