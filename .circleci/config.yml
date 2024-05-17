@@ -42,27 +42,44 @@ jobs:
           name: IMAGE pull
       - run:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo docker compose up -d"
+
+  build:
+    executor: aws-ecr/default
+    steps:
+      - checkout
+      - aws-ecr/build_image:
+          account_id: ${AWS_ACCOUNT_ID}
+          repo: django-circleci-reg
+          path: .
+          dockerfile: Dockerfile
+          push_image: false
+          tag: django-build
+
+
+
 workflows:
   build_and_push_image:
     jobs:
-      - aws-ecr/build_and_push_image:
-          account_id: ${AWS_ACCOUNT_ID}
-          auth:
-            - aws-cli/setup:
-                aws_access_key_id: AWS_ACCESS_KEY_ID
-                aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-                region: AWS_REGION
+      # - aws-ecr/build_and_push_image:
+      #     account_id: ${AWS_ACCOUNT_ID}
+      #     auth:
+      #       - aws-cli/setup:
+      #           aws_access_key_id: AWS_ACCESS_KEY_ID
+      #           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+      #           region: AWS_REGION
+      #     context: aws-ecr
+      #     create_repo: true
+      #     dockerfile: Dockerfile
+      #     region: ${AWS_REGION}
+      #     path: .
+      #     repo: django-circleci-reg
+      - build:
           context: aws-ecr
-          create_repo: true
-          dockerfile: Dockerfile
-          region: ${AWS_REGION}
-          path: .
-          repo: django-circleci-reg
-      
+
       - hold:
           type: approval
           requires:
-            - aws-ecr/build_and_push_image
+            - build
 
       - deploy:
           requires:
