@@ -55,6 +55,7 @@ jobs:
           account_id: ${AWS_ACCOUNT_ID}
           repo: django-circleci-reg
           path: .
+          region: ${AWS_REGION}
           dockerfile: Dockerfile
           push_image: false
 
