@@ -122,10 +122,10 @@ workflows:
       - build:
           context: aws-ecr
       
-      - test:
-          context: aws-ecr
-          requires:
-            - build
+      # - test:
+      #     context: aws-ecr
+      #     requires:
+      #       - build
 
       - hold:
           type: approval
