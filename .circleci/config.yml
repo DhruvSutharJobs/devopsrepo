@@ -43,52 +43,51 @@ jobs:
       - run:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo docker compose up -d"
 
-  build:
-    docker:
-      - image: docker:latest
+  build_and_test:
+    executor: aws-ecr/default
     steps:
-      - checkout
-      # - aws-cli/setup:
-      #           aws_access_key_id: AWS_ACCESS_KEY_ID
-      #           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-      #           region: AWS_REGION
-      # - aws-ecr/build_image:
-      #     account_id: ${AWS_ACCOUNT_ID}
-      #     repo: django-circleci-reg
-      #     path: .
-      #     region: ${AWS_REGION}
-      #     dockerfile: Dockerfile
-      #     push_image: false
-      - run:
-          name: Build image
-          command: docker build -t my-image .
-      - persist_to_workspace:
-         root: /var/lib/docker
-         paths:
-           - aufs
-           - overlay
-           - overlay2
-           - btrfs 
-           - devicemapper
+      - aws-cli/setup:
+                aws_access_key_id: AWS_ACCESS_KEY_ID
+                aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+                region: AWS_REGION
+      - aws-ecr/build_image:
+          account_id: ${AWS_ACCOUNT_ID}
+          repo: django-circleci-reg
+          path: .
+          region: ${AWS_REGION}
+          dockerfile: Dockerfile
+          push_image: false
 
-  # test:
-  #   docker:
-  #     - image: docker:latest
-  #   steps:
-  #     - attach_workspace:
-  #         at: /var/lib/docker
-  #     - run: |
-  #         sudo apt-get update
-  #         sudo apt-get install ca-certificates curl 
-  #         sudo install -m 0755 -d /etc/apt/keyrings 
-  #         sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc 
-  #         sudo chmod a+r /etc/apt/keyrings/docker.asc 
-  #         echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 
-  #         sudo apt-get update 
-  #         sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-  #         sudo usermod -a -G docker $USER
-  #     - run:
-  #         command: sudo docker run -d --name container test my-image
+      - run:
+          command: echo "Run Tests"
+          name: Run Tests
+
+      - persist_to_workspace:
+          root: /var/lib/docker
+          paths:
+            - aufs
+            - overlay
+            - overlay2
+            - btrfs
+            - devicemapper
+            - zfs
+
+  push-image:
+    executor: aws-ecr/default
+    steps:
+      - attach_workspace:
+          at: /var/lib/docker
+      - aws-cli/setup:
+                aws_access_key_id: AWS_ACCESS_KEY_ID
+                aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+                region: AWS_REGION
+      - aws-ecr/push_image:
+          account_id: ${AWS_ACCOUNT_ID}
+          repo: django-circleci-reg
+          region: ${AWS_REGION}
+
+  
+
 
 
 
@@ -109,7 +108,7 @@ workflows:
       #     region: ${AWS_REGION}
       #     path: .
       #     repo: django-circleci-reg
-      - build:
+      - build_and_test:
           context: aws-ecr
       
       # - test:
@@ -120,7 +119,7 @@ workflows:
       - hold:
           type: approval
           requires:
-            - build
+            - build_and_test
 
       - deploy:
           requires:
