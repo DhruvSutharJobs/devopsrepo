@@ -53,7 +53,7 @@ jobs:
                 region: AWS_REGION
       - aws-ecr/build_image:
           account_id: ${AWS_ACCOUNT_ID}
-          repo: django-circleci-reg
+          repo: django-test-reg
           path: .
           region: ${AWS_REGION}
           dockerfile: Dockerfile
@@ -61,7 +61,7 @@ jobs:
 
   test:
     docker:
-      - image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest
+      - image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-test-reg:latest
     steps:
       - checkout
 
