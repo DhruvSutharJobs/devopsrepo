@@ -61,6 +61,8 @@ workflows:
       
       - hold:
           type: approval
+          requires:
+            - aws-ecr/build_and_push_image
 
       - deploy:
           requires:
