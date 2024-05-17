@@ -64,9 +64,9 @@ jobs:
           name: Run Tests
 
       - persist_to_workspace:
-          root: /var/lib/docker
+          root: workspace
           paths:
-            - aufs
+            - /var/lib/docker
             - overlay
             - overlay2
             - btrfs
