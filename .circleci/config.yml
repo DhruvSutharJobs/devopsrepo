@@ -44,26 +44,43 @@ jobs:
           command: ssh -o StrictHostKeyChecking=accept-new -i $HOME/.ssh/id_rsa* ubuntu@$INSTANCE_IP "sudo docker compose up -d"
 
   build:
-    executor: aws-ecr/default
+    docker:
+      - image: docker:latest
     steps:
       - checkout
-      - aws-cli/setup:
-                aws_access_key_id: AWS_ACCESS_KEY_ID
-                aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-                region: AWS_REGION
-      - aws-ecr/build_image:
-          account_id: ${AWS_ACCOUNT_ID}
-          repo: django-test-reg
-          path: .
-          region: ${AWS_REGION}
-          dockerfile: Dockerfile
-          push_image: false
+      # - aws-cli/setup:
+      #           aws_access_key_id: AWS_ACCESS_KEY_ID
+      #           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+      #           region: AWS_REGION
+      # - aws-ecr/build_image:
+      #     account_id: ${AWS_ACCOUNT_ID}
+      #     repo: django-circleci-reg
+      #     path: .
+      #     region: ${AWS_REGION}
+      #     dockerfile: Dockerfile
+      #     push_image: false
+      - run:
+          name: Build image
+          command: docker build -t my-image .
+      - persist_to_workspace:
+         root: /var/lib/docker
+         paths:
+           - aufs
+           - overlay
+           - overlay2
+           - btrfs 
+           - devicemapper
 
   test:
     docker:
-      - image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-test-reg:latest
+      - image: docker:latest
     steps:
-      - checkout
+      - attach_workspace:
+          at: /var/lib/docker
+      - run:
+          docker run -d --name container test my-image
+
+
 
 
 workflows:
@@ -86,9 +103,9 @@ workflows:
           context: aws-ecr
       
       - test:
+          context: aws-ecr
           requires:
             - build
-          context: aws-ecr
 
       - hold:
           type: approval
@@ -98,6 +115,5 @@ workflows:
       - deploy:
           requires:
             - hold
-            - test
             # - aws-ecr/build_and_push_image
           context: aws-ecr
