@@ -47,6 +47,10 @@ jobs:
     executor: aws-ecr/default
     steps:
       - checkout
+      - aws-cli/setup:
+                aws_access_key_id: AWS_ACCESS_KEY_ID
+                aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+                region: AWS_REGION
       - aws-ecr/build_image:
           account_id: ${AWS_ACCOUNT_ID}
           repo: django-circleci-reg
