@@ -64,7 +64,7 @@ jobs:
           name: Run Tests
 
       - persist_to_workspace:
-          root: /var/lib/docker
+          root: /var/lib
           paths:
             - ./*
 
