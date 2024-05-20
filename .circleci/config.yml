@@ -67,11 +67,11 @@ jobs:
           root: workspace
           paths:
             - /var/lib/docker
-            - overlay
-            - overlay2
-            - btrfs
-            - devicemapper
-            - zfs
+            # - overlay
+            # - overlay2
+            # - btrfs
+            # - devicemapper
+            # - zfs
 
   push-image:
     executor: aws-ecr/default
