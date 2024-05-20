@@ -64,14 +64,10 @@ jobs:
           name: Run Tests
 
       - persist_to_workspace:
-          root: workspace
+          root: /var/lib/docker
           paths:
-            - /var/lib/docker
-            # - overlay
-            # - overlay2
-            # - btrfs
-            # - devicemapper
-            # - zfs
+            - "*"
+
 
   push-image:
     executor: aws-ecr/default
