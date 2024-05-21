@@ -75,6 +75,7 @@ jobs:
   scan_image:
     executor: aws-cli/default
     steps:
+      - checkout
       - attach_workspace:
           at: workspace
       - run:
