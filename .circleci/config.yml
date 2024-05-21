@@ -65,7 +65,7 @@ jobs:
           name: Run Tests
 
       - run:
-          command: docker save ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest -o workspace/image.tar
+          command: mkdir workspace && docker save ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/django-circleci-reg:latest -o workspace/image.tar
 
       - persist_to_workspace:
           root: workspace
@@ -136,7 +136,7 @@ workflows:
           type: approval
           requires:
             - build_and_test
-            
+
 
       # - deploy:
       #     requires:
