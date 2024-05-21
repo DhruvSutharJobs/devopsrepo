@@ -73,7 +73,7 @@ jobs:
             - image.tar
 
   scan_image:
-    executor: aws-cli/default
+    executor: aws-ecr/default
     steps:
       - checkout
       - attach_workspace:
