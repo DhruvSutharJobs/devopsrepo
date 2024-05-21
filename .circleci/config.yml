@@ -73,8 +73,7 @@ jobs:
             - image.tar
 
   scan_image:
-    docker:
-      - image: docker:latest
+    executor: aws-ecr/default
     steps:
       - attach_workspace:
           at: workspace
