@@ -79,7 +79,7 @@ jobs:
       - attach_workspace:
           at: workspace
       - run:
-          command: docker load -i workspace/image.tar
+          command: sudo docker load -i workspace/image.tar
       - codequality/scan:
           project_key: test_scan
           workspace_path: .
