@@ -73,8 +73,7 @@ jobs:
             - image.tar
 
   scan_image:
-    docker:
-      - image: docker:stable-git
+    executor: aws-cli/default
     steps:
       - attach_workspace:
           at: workspace
@@ -83,7 +82,7 @@ jobs:
       - run:
           name: Install trivy
           command: |
-            apk add --update-cache --upgrade curl
+            # apk add --update-cache --upgrade curl
             curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
       - run:
           name: Scan the local image with trivy
@@ -104,10 +103,6 @@ jobs:
           account_id: ${AWS_ACCOUNT_ID}
           repo: django-circleci-reg
           region: ${AWS_REGION}
-
-  
-
-
 
 
 
@@ -139,10 +134,10 @@ workflows:
       #     requires:
       #       - build
 
-      - hold:
-          type: approval
-          requires:
-            - build_and_test
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build_and_test
 
 
       # - deploy:
